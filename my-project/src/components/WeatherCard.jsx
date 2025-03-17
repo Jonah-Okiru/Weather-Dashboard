@@ -1,10 +1,12 @@
 // WeatherCard Component
 // This component displays the fetched weather data
-import React from "react";
-
+import React from "react"; // Import React 
+// WeatherCard function
 const WeatherCard = ({ data }) => {
   return (
+    
     <div className="bg-white p-6 rounded-lg shadow-lg mt-4">
+      {/*  */}
       <h2 className="text-2xl font-bold">{data.name}, {data.sys.country}</h2>
       <p className="text-lg">Temperature: {data.main.temp}°C</p>
       <p className="text-lg">Humidity: {data.main.humidity}%</p>
