@@ -19,14 +19,22 @@ const App = () => {
     try {
       const response = await fetch(URL);
       if (!response.ok) {
-        throw new Error("City not found");
+        throw new Error("City not found or invalid API responses");
       }
       const data = await response.json();
+      console.log("API Response:", data); // Debugging output
+      if (!data || typeof data !== "object" || !data.main || !data.weather || !data.sys || !data.wind) {
+        throw new Error("Un expected API response formart");
+      }
       setWeatherData(data);
       setError(null);
       setCity(cityName);
     } catch (err) {
-      setError(err.message);
+      if (err.message.includes("Failed to fetch")) {
+        setError("Network Error. Please check your internet connection.");
+      } else {
+        setError(err.message)
+      }
       setWeatherData(null);
     }
   };
