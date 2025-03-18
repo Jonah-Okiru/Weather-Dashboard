@@ -11,6 +11,13 @@ const App = () => {
   const [error, setError] = useState(null);
   // State to store the city name for the automatic update
   const [city, setCity] = useState("");
+  // State to store recent searches
+  const [recentSearches, setRecentSearches] = useState([]);
+  // Load recent searches from local storage on mount
+  useEffect(() =>{
+    const savedSearches = JSON.parse(localStorage.getItem("recentSearches")) || [];
+    setRecentSearches(savedSearches);
+  }, []);
   // Function to fetch weather data
   const fetchWeather = async (cityName) => {
     const API_KEY = "6431edce50eb6d01e44be0d98469d8cd"; 
@@ -29,6 +36,10 @@ const App = () => {
       setWeatherData(data);
       setError(null);
       setCity(cityName);
+      // update recent searches
+      const updatedSearches = [cityName, ...recentSearches.filter(item => item !== cityName)].slice(0, 5);
+      setRecentSearches(updatedSearches);
+      localStorage.setItem("recentSearches", JSON.stringify(updatedSearches));
     } catch (err) {
       if (err.message.includes("Failed to fetch")) {
         setError("Network Error. Please check your internet connection.");
